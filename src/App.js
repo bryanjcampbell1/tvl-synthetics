@@ -48,10 +48,10 @@ function Banner() {
         <p style={{
             fontFamily: "Arial, Helvetica, sans-serif",
             fontSize: 70,
-            fontStyle: "normal",
+            fontStyle: "italic",
             fontVariant: "normal",
             fontWeight: '900',
-            color:'#72bcd4'
+            color:'rgb(22,162,185)'
         }}>TVL SYNTHS</p>
     </div>
   );
@@ -171,7 +171,7 @@ class App extends React.Component {
                     }</Button>
                 </div>
                 <Banner/>
-                <Main web3={this.state.web3} authSignature={this.state.authSignature} />
+                <Main web3={this.state.web3} authSignature={this.state.authSignature} base={base} />
             </div>
         );
     }

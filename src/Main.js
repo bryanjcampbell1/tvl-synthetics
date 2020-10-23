@@ -17,16 +17,16 @@ moment().format();
 
 const aaveDerivatives = [
     {  project:"Aave",
-        name:'Aave @ $213,244 (10/20/20)',
+        tvl:'$213,244',
         expires:'11/20/20 at 5:00 PM EST',
-        price:'$21.3244',
+        price:'21.3244',
         opiumId:'adadtgadgadgadgat'
 
     },
     {  project:"Aave",
-        name:'Aave @ $313,244 (10/20/20)',
+        tvl:'$313,244',
         expires:'12/20/20 at 5:00 PM EST',
-        price:'$31.3244',
+        price:'31.3244',
         opiumId:'adadtgadgadgadgat'
 
     },
@@ -35,19 +35,17 @@ const aaveDerivatives = [
 
 const opiumDerivatives = [
     {  project:"Opium Network",
-        name:'Opium @ $74,244 (10/20/20)',
+        tvl:'$74,244',
         expires:'11/20/20 at 5:00 PM EST',
-        price:'$74.244',
+        price:'74.244',
         opiumId:'adadatbsfbab'
 
     },
 ];
 
 
-const base = `https://api.opium.exchange/v1/`; //MAINNET
-
-
 function Main(props){
+    const base = props.base;
 
     const initialData = {
         labels: [],
@@ -265,10 +263,13 @@ function Main(props){
                     {
                         derivativesArray.map((row, key) =>
                             <SynthProduct project={row.project}
-                                          name={row.name}
+                                          tvl={row.tvl}
                                           expires={row.expires}
                                           price={row.price}
-                                          opiumID={row.opiumId} />
+                                          opiumID={row.opiumId}
+                                          base={base}
+                                          web3={props.web3}
+                            />
                         )
                     }
                 </div>

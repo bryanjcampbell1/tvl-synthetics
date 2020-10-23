@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import './App.css';
 
 import { Button,Form } from 'react-bootstrap';
 
-const base = `https://api.opium.exchange/v1/`; //MAINNET
+import './App.css';
+
+
 
 
 let erc20 = {
@@ -233,10 +234,29 @@ let erc20 = {
 
 
 
+
 function SynthProduct(props){
 
-    const [screen, setScreen] = useState(0);
+    const base = props.base;
 
+    const [screen, setScreen] = useState(0);
+    const [submitState, setSubmitState] = useState(0);
+    const [quantity, setQuantity] = useState(0);
+    const [type, setType] = useState();
+
+
+
+
+    const approve = async()  =>{
+        setSubmitState(1);
+        await approveSpend();
+        setSubmitState(2);
+    }
+
+    const  submitOrder = async() => {
+        setSubmitState(3);
+
+    }
 
     const  approveSpend= async() => {
 
@@ -253,36 +273,187 @@ function SynthProduct(props){
         const calculatedApproveValue = props.web3.utils.toHex(tokenAmountToApprove.mul(props.web3.utils.toBN(10).pow(tokenDecimals)));
 
 
-        tokenContract.methods.approve(
+        await tokenContract.methods.approve(
             toAddress,
             calculatedApproveValue
         ).send({from: fromAddress})
 
-
     }
+
+
+
 
     return (
         <div>
             {(screen === 0)?
                 <div style={box1}>
-                    <p>yo</p>
-                    <Button onClick={() => setScreen(1)}>Next</Button>
+
+                    <p>{props.project} TVL @ {props.tvl}</p>
+                    <hr/>
+                    <div style={{display:'flex'}}>
+                        <p>Price:{' '}</p>
+                        <p>$ {props.price}</p>
+                    </div>
+                    <div style={{display:'flex'}}>
+                        <p>Expires:{' '}</p>
+                        <p>{props.expires}</p>
+                    </div>
+                    <hr/>
+                    <p style={{textAlign:'start'}} >Details</p>
+                    <hr/>
+                    <Form style={{textAlign:'start'}}>
+                        <Form.Group controlId="formQuantity">
+                            <Form.Label>Quantity</Form.Label>
+                            <Form.Control placeholder="" onChange={(e)=> {setQuantity(e.target.value)}}/>
+                            <Form.Text className="text-muted">
+                                Collateral to lock {quantity*Number(props.price)} USDC
+                            </Form.Text>
+                        </Form.Group>
+                    </Form>
+                    <div>
+                        <Button variant="info"  onClick={() => {
+                                                setScreen(1);
+                                                setType('long')
+                                            }
+                                        }
+                        >LONG</Button>
+                    </div>
+                    <br/>
+                    <div>
+                        <Button variant="info"  onClick={() => {
+                                                setScreen(1);
+                                                setType('long')
+                                            }
+                                        }
+                        >SHORT</Button>
+                    </div>
                 </div>
                 :
                 <div></div>
             }
             {(screen === 1)?
                 <div style={box1}>
-                    <p>mamma</p>
-                    <Button onClick={() => setScreen(2)}>Next</Button>
+                    <div style={{display:'flex', flexDirection:'flex-start'}}>
+                        <Button style={{marginTop:-10}} onClick={() => setScreen(2)}>Back</Button>
+                    </div>
+                    <p style={{marginTop:-45}} >Order Details</p>
+                    <hr/>
+                    <p>{props.project} TVL @ {props.tvl}</p>
+                    <div style={{display:'flex'}}>
+                        <p>Quantity:{' '}</p>
+                        <p>{quantity}</p>
+                    </div>
+                    <div style={{display:'flex'}}>
+                        <p>Collateral:{' '}</p>
+                        <p>$ {quantity*Number(props.price)}</p>
+                    </div>
+                    <div style={{display:'flex'}}>
+                        <p>Max Payout:{' '}</p>
+                        <p>{2*quantity*Number(props.price)}</p>
+                    </div>
+
+                    <div style={{marginTop: 20}}>
+                        {
+                            (submitState === 0) ?
+                                <div>
+                                    <Button onClick={() => { approve() } }
+                                            variant="info"
+                                            size="lg"
+                                            style={{width:'50%'}}>
+
+                                        Approve
+                                    </Button>
+                                    <br/>
+                                    <Button variant="outline-light"  size="lg" style={{width:'50%', marginTop:20}} disabled>
+                                    Submit Order
+                                    </Button>
+                                </div>
+                            :
+                            <div></div>
+                        }
+                        {
+                            (submitState === 1) ?
+                                <div>
+                                    <Button className="Waiting"
+                                            variant="info"
+                                            size="lg"
+                                            style={{width:'50%'}}>
+                                        Approve
+                                    </Button>
+                                    <br/>
+                                    <Button variant="outline-light"  size="lg" style={{width:'50%', marginTop:20}} disabled>
+                                    Submit Order
+                                    </Button>
+                                </div>
+                            :
+                            <div></div>
+                        }
+                        {
+                            (submitState === 2) ?
+                                <div>
+                                    <Button variant="outline-light"  size="lg" style={{width:'50%'}} disabled>
+                                    Approve
+                                    </Button>
+                                    <br/>
+                                    <Button onClick={submitOrder}
+                                            variant="info"
+                                            size="lg"
+                                            style={{width:'50%', marginTop:20}}>
+                                    Submit Order
+                                    </Button>
+                                </div>
+                                :
+                                <div></div>
+                        }
+                        {
+                            (submitState === 3) ?
+                                <div>
+                                    <Button variant="outline-light"  size="lg" style={{width:'50%'}} disabled>
+                                        Approve
+                                    </Button>
+                                    <br/>
+                                    <Button className="Waiting"
+                                            variant="info"
+                                            size="lg"
+                                            style={{width:'50%', marginTop:20}}>
+                                        Submit Order
+                                    </Button>
+                                </div>
+                                :
+                                <div></div>
+                        }
+
+                    </div>
                 </div>
                 :
                 <div></div>
             }
             {(screen === 2) ?
                 <div style={box1}>
-                    <p>sofat</p>
-                    <Button onClick={() => setScreen(0)}>Next</Button>
+                    <p>Order Confirmation</p>
+                    <hr/>
+                    <div>
+                        <p style={{textAlign:'start'}}>
+                            Congratulations! You submitted an order for {quantity} {props.project} TVL synthetic derivative tokens
+                        </p>
+                        <br/>
+                        <div style={{display:'flex', justifyContent:'start'}}>
+                            <p>Visit</p>
+                            <div style={{marginLeft:10, marginRight:10,}}>
+                                <a href="https://trade.opium.exchange">Opium Exchange</a>
+                            </div>
+                            <p>to check your order status or cancel your order</p>
+                        </div>
+                    </div>
+                    <br/>
+                    <div>
+                        <Button style={{width:200, backgroundColor:'rgb(114,188,212)', borderColor:'rgb(114,188,212)'}} onClick={() => {
+                            setScreen(1);
+                            setQuantity(0);
+                        }
+                        }
+                        >Done</Button>
+                    </div>
                 </div>
                 :
                 <div></div>
@@ -303,4 +474,74 @@ const box1 = {
     marginTop:20,
 }
 
+
+
 export default SynthProduct;
+/*
+{(() => {
+                                switch (submitState) {
+                                    case 0:
+                                        return(
+                                            <div>
+                                                <Button onClick={() => approve}
+                                                        variant="info"
+                                                        size="lg"
+                                                        style={{width:'50%'}}>
+                                                    Approve
+                                                </Button>
+                                                <br/>
+                                                <Button variant="outline-light"  size="lg" style={{width:'50%'}} disabled>
+                                                    Submit Order
+                                                </Button>
+                                            </div>
+                                        );
+                                    case 1:
+                                        return(
+                                            <div>
+                                            <Button className="Waiting"
+                                                       variant="info"
+                                                       size="lg"
+                                                       style={{width:'50%'}}>
+                                            Approve
+                                        </Button>
+                                        <br/>
+                                        <Button variant="outline-light"  size="lg" style={{width:'50%'}} disabled>
+                                            Submit Order
+                                        </Button>
+                                            </div>
+                                    );
+                                    case 2:
+                                        return(
+                                            <div>
+                                                <Button variant="outline-light"  size="lg" style={{width:'50%'}} disabled>
+                                                    Approve
+                                                </Button>
+                                                <br/>
+                                                <Button onClick={() => approve}
+                                                        variant="info"
+                                                        size="lg"
+                                                        style={{width:'50%'}}>
+                                                    Submit Order
+                                                </Button>
+                                            </div>
+                                    );
+                                    case 3:
+                                        return(
+                                            <div>
+                                                <Button variant="outline-light"  size="lg" style={{width:'50%'}} disabled>
+                                                    Approve
+                                                </Button>
+                                                <br/>
+                                                <Button className="Waiting"
+                                                        variant="info"
+                                                        size="lg"
+                                                        style={{width:'50%'}}>
+                                                    Submit Order
+                                                </Button>
+                                            </div>
+                                        );
+                                    default:
+                                        return null;
+                                }
+                            })()}
+ */
