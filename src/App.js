@@ -65,7 +65,8 @@ class App extends React.Component {
 
         this.state = {
             web3: null,
-            account: null
+            account: null,
+            authSignature:null
         }
 
     }
@@ -116,10 +117,36 @@ class App extends React.Component {
                 authSignature = signature;
 
                 console.log("authSignature ", authSignature);
-               // that.connectToSocket(fromAddress,signature);
+                //that.connectToSocket(fromAddress,signature);
+                that.setState({authSignature:authSignature});
 
             }
         );
+
+    }
+
+    async connectToSocket(address,signature){
+        // const socket = io(`https://api-test.opium.exchange/v1`);
+        const socket = io(`https://api.opium.exchange/v1`);
+        
+        socket.on('position:address', (msg) => console.log('Position MSG', msg))
+
+        socket.on('error:message', (msg) => {
+            console.log('ERROR MSG', msg)
+        })
+
+        socket.on('connect', () => {
+            console.log('Connected to socket')
+
+            socket.emit('subscribe', {
+                ch: 'position:address',
+                a: address,
+                sig: signature
+            })
+
+        })
+
+
 
     }
 
@@ -144,7 +171,7 @@ class App extends React.Component {
                     }</Button>
                 </div>
                 <Banner/>
-                <Main wallet={this.state.web3} />
+                <Main web3={this.state.web3} authSignature={this.state.authSignature} />
             </div>
         );
     }
