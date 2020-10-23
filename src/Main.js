@@ -226,9 +226,6 @@ function Main(props){
         else{
             setDerivativesArray(aaveDerivatives);
         }
-
-
-
     };
 
 
