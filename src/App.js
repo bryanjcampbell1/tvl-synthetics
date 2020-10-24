@@ -1,41 +1,18 @@
 import React from 'react';
 import './App.css';
-import moment from 'moment';
 import {Button} from 'react-bootstrap';
 import Web3 from "web3";
 
 import Main from "./Main";
+import Header from "./Header";
+import Banner from "./Banner";
 import web3Modal from "./WalletModal";
+
+const axios = require('axios');
 
 //Opium Globals
 //const base = `https://api-test.opium.exchange/v1/`; //RINKEBY
 const base = `https://api.opium.exchange/v1/`; //MAINNET
-
-
-const axios = require('axios');
-
-moment().format();
-
-function Header(){
-    return(
-        <div style={{height:60}}></div>
-    );
-}
-
-function Banner() {
-  return (
-    <div style={{textAlign:'center'}}>
-        <p style={{
-            fontFamily: "Arial, Helvetica, sans-serif",
-            fontSize: 70,
-            fontStyle: "italic",
-            fontVariant: "normal",
-            fontWeight: '900',
-            color:'rgb(22,162,185)'
-        }}>TVL SYNTHS</p>
-    </div>
-  );
-}
 
 
 class App extends React.Component {
@@ -49,10 +26,6 @@ class App extends React.Component {
             authSignature:null
         }
 
-    }
-
-    componentDidMount(){
-        //this.loadWallet();
     }
 
     async loadWeb3(){
