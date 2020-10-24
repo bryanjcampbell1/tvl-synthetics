@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {Button} from 'react-bootstrap';
+import {Button,Row,Col} from 'react-bootstrap';
 import Web3 from "web3";
 
 import Main from "./Main";
@@ -70,6 +70,7 @@ class App extends React.Component {
     render() {
         return(
             <div style={{backgroundColor:'#FFF5EE'}}>
+
                 <Header/>
                 <div style={{display:'flex',justifyContent:'flex-end', padding:30, marginTop:-60}}>
                     <Button
@@ -80,13 +81,20 @@ class App extends React.Component {
                         onClick={() => this.loadWeb3() }
 
                     >{(!this.state.account)?
-                        "Unlock Metamask"
+                        "Unlock Wallet"
                         :
                         `${this.state.account.substring(0,6)}`+'...'+`${this.state.account.slice(this.state.account.length - 4)}`
                     }</Button>
                 </div>
+
                 <Banner/>
-                <Main web3={this.state.web3} authSignature={this.state.authSignature} base={base} />
+                <Row>
+                    <Col xs={0} sm={1} md={2} lg={2}></Col>
+                    <Col>
+                         <Main web3={this.state.web3} authSignature={this.state.authSignature} base={base} />
+                    </Col>
+                    <Col xs={0} sm={1} md={2} lg={2}></Col>
+                </Row>
             </div>
         );
     }

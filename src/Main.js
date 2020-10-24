@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import { Button,Form } from 'react-bootstrap';
+import {Row, Col, Form} from 'react-bootstrap';
 
 import ProjectChart from "./ProjectChart";
 import SynthProduct from './SynthProduct';
@@ -51,7 +51,7 @@ function Main(props){
         }}>
             <div style={{
                 padding:20,
-                width:'60%',
+                width:'95%',
                 textAlign:'center'
             }}>
 
@@ -70,25 +70,31 @@ function Main(props){
 
                 <p> Derivative Products</p>
 
-                <div >
-                    {
-                        derivativesArray
-                            .filter(i => (i.project === project) )
-                            .map((row, key) =>
-                            <SynthProduct project={row.project}
-                                          tvl={row.tvl}
-                                          expires={row.expires}
-                                          price={row.price}
-                                          opiumID={row.opiumId}
-                                          currency={row.currency}
-                                          currencyName={row.currencyName}
-                                          base={base}
-                                          web3={props.web3}
-                                          authSignature={props.authSignature}
-                            />
-                        )
-                    }
-                </div>
+                <Row>
+                    <Col xs={0} sm={1} md={2} lg={2} ></Col>
+                    <Col>
+                        <div >
+                            {
+                                derivativesArray
+                                    .filter(i => (i.project === project) )
+                                    .map((row, key) =>
+                                        <SynthProduct project={row.project}
+                                                      tvl={row.tvl}
+                                                      expires={row.expires}
+                                                      price={row.price}
+                                                      opiumID={row.opiumId}
+                                                      currency={row.currency}
+                                                      currencyName={row.currencyName}
+                                                      base={base}
+                                                      web3={props.web3}
+                                                      authSignature={props.authSignature}
+                                        />
+                                    )
+                            }
+                        </div>
+                    </Col>
+                    <Col xs={0} sm={1} md={2} lg={2} ></Col>
+                </Row>
             </div>
         </div>
     );

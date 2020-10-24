@@ -318,7 +318,7 @@ function SynthProduct(props){
 const box1 = {
     width:'100%',
     backgroundColor:'#ff7961',
-    borderRadius:50,
+    borderRadius:10,
     padding:30,
     marginTop:20,
 }
