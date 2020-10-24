@@ -11,20 +11,26 @@ const derivativesArray = [
         tvl:'$213,244',
         expires:'11/20/20 at 5:00 PM EST',
         price:'21.3244',
-        opiumId:'adadtgadgadgadgat'
+        opiumId:'adadtgadgadgadgat',
+        currency: "0xb16f2a1cebE5D195a7e3b1D5B5fecd30820E894a",//DAI
+        currencyName:"DAI"
 
     },
     {  project:"Aave",
         tvl:'$313,244',
         expires:'12/20/20 at 5:00 PM EST',
         price:'31.3244',
-        opiumId:'adadtgadgadgadgat'
+        opiumId:'adadtgadgadgadgat',
+        currency: "0xb16f2a1cebE5D195a7e3b1D5B5fecd30820E894a",//DAI
+        currencyName:"DAI"
     },
     {  project:"Opium Network",
         tvl:'$74,244',
         expires:'11/20/20 at 5:00 PM EST',
         price:'74.244',
-        opiumId:'adadatbsfbab'
+        opiumId:'adadatbsfbab',
+        currency: "0xb16f2a1cebE5D195a7e3b1D5B5fecd30820E894a",//DAI
+        currencyName:"DAI"
 
     }
 
@@ -74,8 +80,11 @@ function Main(props){
                                           expires={row.expires}
                                           price={row.price}
                                           opiumID={row.opiumId}
+                                          currency={row.currency}
+                                          currencyName={row.currencyName}
                                           base={base}
                                           web3={props.web3}
+                                          authSignature={props.authSignature}
                             />
                         )
                     }

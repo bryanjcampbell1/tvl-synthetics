@@ -1,237 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 
 import { Button,Form } from 'react-bootstrap';
 
 import './App.css';
+import erc20 from "./apis_abis";
 
-
-
-
-let erc20 = {
-    "abi": [
-        {
-            "constant": true,
-            "inputs": [],
-            "name": "name",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "string"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": false,
-            "inputs": [
-                {
-                    "name": "_spender",
-                    "type": "address"
-                },
-                {
-                    "name": "_value",
-                    "type": "uint256"
-                }
-            ],
-            "name": "approve",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "bool"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [],
-            "name": "totalSupply",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": false,
-            "inputs": [
-                {
-                    "name": "_from",
-                    "type": "address"
-                },
-                {
-                    "name": "_to",
-                    "type": "address"
-                },
-                {
-                    "name": "_value",
-                    "type": "uint256"
-                }
-            ],
-            "name": "transferFrom",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "bool"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [],
-            "name": "decimals",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "uint8"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [
-                {
-                    "name": "_owner",
-                    "type": "address"
-                }
-            ],
-            "name": "balanceOf",
-            "outputs": [
-                {
-                    "name": "balance",
-                    "type": "uint256"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [],
-            "name": "symbol",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "string"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "constant": false,
-            "inputs": [
-                {
-                    "name": "_to",
-                    "type": "address"
-                },
-                {
-                    "name": "_value",
-                    "type": "uint256"
-                }
-            ],
-            "name": "transfer",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "bool"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "constant": true,
-            "inputs": [
-                {
-                    "name": "_owner",
-                    "type": "address"
-                },
-                {
-                    "name": "_spender",
-                    "type": "address"
-                }
-            ],
-            "name": "allowance",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "payable": true,
-            "stateMutability": "payable",
-            "type": "fallback"
-        },
-        {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": true,
-                    "name": "owner",
-                    "type": "address"
-                },
-                {
-                    "indexed": true,
-                    "name": "spender",
-                    "type": "address"
-                },
-                {
-                    "indexed": false,
-                    "name": "value",
-                    "type": "uint256"
-                }
-            ],
-            "name": "Approval",
-            "type": "event"
-        },
-        {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": true,
-                    "name": "from",
-                    "type": "address"
-                },
-                {
-                    "indexed": true,
-                    "name": "to",
-                    "type": "address"
-                },
-                {
-                    "indexed": false,
-                    "name": "value",
-                    "type": "uint256"
-                }
-            ],
-            "name": "Transfer",
-            "type": "event"
-        }
-    ]
-}
-
+const axios = require('axios');
 
 
 
@@ -245,23 +19,15 @@ function SynthProduct(props){
     const [type, setType] = useState();
 
 
-
-
     const approve = async()  =>{
         setSubmitState(1);
         await approveSpend();
         setSubmitState(2);
     }
 
-    const  submitOrder = async() => {
-        setSubmitState(3);
-
-    }
-
     const  approveSpend= async() => {
 
         const fromAddress = (await props.web3.eth.getAccounts())[0];
-
 
         // Instantiate contract
         const tokenContract = new props.web3.eth.Contract(erc20.abi,"0xb16f2a1cebE5D195a7e3b1D5B5fecd30820E894a" );
@@ -272,15 +38,96 @@ function SynthProduct(props){
         const tokenAmountToApprove = props.web3.utils.toBN(999000000000);
         const calculatedApproveValue = props.web3.utils.toHex(tokenAmountToApprove.mul(props.web3.utils.toBN(10).pow(tokenDecimals)));
 
-
         await tokenContract.methods.approve(
             toAddress,
             calculatedApproveValue
         ).send({from: fromAddress})
+    }
+
+    const  submit = async() => {
+
+        setSubmitState(3);
+        await formOrder();
+        setScreen(2);
+        setSubmitState(0);
 
     }
 
+    const  formOrder = async() => {
 
+        const fromAddress = (await this.state.web3.eth.getAccounts())[0];
+
+        let body = {
+            "ticker": props.opiumID,
+            "price": props.price, //how include 10^18 decimals?
+            "quantity": quantity,
+            "currency": props.currency,
+            "action": type,
+            "expiresAt": props.expires
+        }
+
+        axios
+            .post(base + `orderbook/formOrder?authAddress=${fromAddress}`, body, {
+                headers: {
+                    Authorization: `Bearer ${props.authSignature}`
+                }
+            })
+            .then(response => {
+                console.log(response.data)
+                signOrder(response.data[0].orderToSign,response.data[0].id)
+
+            })
+
+    }
+
+    async function signOrder(orderMessage,id){
+        console.log("order message ", orderMessage)
+        //console.log("signed order message ", await signMessage(orderMessage))
+
+
+        const fromAddress = (await this.state.web3.eth.getAccounts())[0];
+
+        const method = "eth_signTypedData_v3";
+
+        await props.web3.currentProvider.sendAsync({
+                id: 1,
+                method: method,
+                params: [fromAddress, JSON.stringify(orderMessage)],
+            },
+            (err, result) => {
+                if (err) {
+                    return console.error(err);
+                }
+                const signature = result.result;
+
+
+                console.log("signed order message ", signature)
+                submitOrder(signature,id)
+
+            });
+
+    }
+
+    async function submitOrder(signedOrderMessage,id){
+
+        const fromAddress = (await props.web3.eth.getAccounts())[0];
+
+        let body = [{
+            id:id,
+            signature:signedOrderMessage
+        }]
+
+        axios
+            .post(base + `orderbook/orders?authAddress=${fromAddress}`, body, {
+                headers: {
+                    Authorization: `Bearer ${props.authSignature}`
+                }
+            })
+            .then(response => {
+                console.log(response.data)
+
+            })
+    }
 
 
     return (
@@ -311,18 +158,22 @@ function SynthProduct(props){
                         </Form.Group>
                     </Form>
                     <div>
-                        <Button variant="info"  onClick={() => {
+                        <Button variant="info"
+                                style={{width:200}}
+                                onClick={() => {
                                                 setScreen(1);
-                                                setType('long')
+                                                setType('ASK');
                                             }
                                         }
                         >LONG</Button>
                     </div>
                     <br/>
                     <div>
-                        <Button variant="info"  onClick={() => {
+                        <Button variant="info"
+                                style={{width:200}}
+                                onClick={() => {
                                                 setScreen(1);
-                                                setType('long')
+                                                setType('BID');
                                             }
                                         }
                         >SHORT</Button>
@@ -395,7 +246,7 @@ function SynthProduct(props){
                                     Approve
                                     </Button>
                                     <br/>
-                                    <Button onClick={submitOrder}
+                                    <Button onClick={submit}
                                             variant="info"
                                             size="lg"
                                             style={{width:'50%', marginTop:20}}>
@@ -460,8 +311,6 @@ function SynthProduct(props){
             }
         </div>
     );
-
-
 }
 
 
@@ -477,71 +326,3 @@ const box1 = {
 
 
 export default SynthProduct;
-/*
-{(() => {
-                                switch (submitState) {
-                                    case 0:
-                                        return(
-                                            <div>
-                                                <Button onClick={() => approve}
-                                                        variant="info"
-                                                        size="lg"
-                                                        style={{width:'50%'}}>
-                                                    Approve
-                                                </Button>
-                                                <br/>
-                                                <Button variant="outline-light"  size="lg" style={{width:'50%'}} disabled>
-                                                    Submit Order
-                                                </Button>
-                                            </div>
-                                        );
-                                    case 1:
-                                        return(
-                                            <div>
-                                            <Button className="Waiting"
-                                                       variant="info"
-                                                       size="lg"
-                                                       style={{width:'50%'}}>
-                                            Approve
-                                        </Button>
-                                        <br/>
-                                        <Button variant="outline-light"  size="lg" style={{width:'50%'}} disabled>
-                                            Submit Order
-                                        </Button>
-                                            </div>
-                                    );
-                                    case 2:
-                                        return(
-                                            <div>
-                                                <Button variant="outline-light"  size="lg" style={{width:'50%'}} disabled>
-                                                    Approve
-                                                </Button>
-                                                <br/>
-                                                <Button onClick={() => approve}
-                                                        variant="info"
-                                                        size="lg"
-                                                        style={{width:'50%'}}>
-                                                    Submit Order
-                                                </Button>
-                                            </div>
-                                    );
-                                    case 3:
-                                        return(
-                                            <div>
-                                                <Button variant="outline-light"  size="lg" style={{width:'50%'}} disabled>
-                                                    Approve
-                                                </Button>
-                                                <br/>
-                                                <Button className="Waiting"
-                                                        variant="info"
-                                                        size="lg"
-                                                        style={{width:'50%'}}>
-                                                    Submit Order
-                                                </Button>
-                                            </div>
-                                        );
-                                    default:
-                                        return null;
-                                }
-                            })()}
- */
