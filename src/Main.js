@@ -13,16 +13,12 @@ const derivativesArray = [
         price:'21.3244',
         opiumId:'adadtgadgadgadgat',
         currency: "0xb16f2a1cebE5D195a7e3b1D5B5fecd30820E894a",//DAI
-        currencyName:"DAI"
-
-    },
-    {  project:"Aave",
-        tvl:'$313,244',
-        expires:'12/20/20 at 5:00 PM EST',
-        price:'31.3244',
-        opiumId:'adadtgadgadgadgat',
-        currency: "0xb16f2a1cebE5D195a7e3b1D5B5fecd30820E894a",//DAI
-        currencyName:"DAI"
+        currencyName:"DAI",
+        description:"At expiration the break even value of TVL in USD is $213,244. Any increase in TVL will result in a positive payout to the holder of the long token, " +
+            "payed by the short token holder.  A decrease in TVL will result in a payout in the opposite direction. " +
+            "Payout value is proportional to the percent change in TVL, with a maximum payout of 2 times collateral. "+
+            "Orders are matched and payouts are managed via the Opium Exchange protocol. "+
+            "Defipulse data is used as the price feed for derivative settlement."
     },
     {  project:"Opium Network",
         tvl:'$74,244',
@@ -30,10 +26,14 @@ const derivativesArray = [
         price:'74.244',
         opiumId:'adadatbsfbab',
         currency: "0xb16f2a1cebE5D195a7e3b1D5B5fecd30820E894a",//DAI
-        currencyName:"DAI"
-
+        currencyName:"DAI",
+        description:"At expiration the break even value of TVL in USD is $74,244. " +
+            "Any increase in TVL will result in a positive payout to the holder of the Long token," +
+            "payed by the Short token holder.  A decrease in TVL will result in a payout in the opposite direction." +
+            "Payout value is proportional to the percent change in TVL, with a maximum payout of 2 times collateral"+
+            "Orders are matched and payouts are managed via the Opium Exchange protocol."+
+            "Defipulse data is used as the price feed for derivative settlement."
     }
-
 ];
 
 
@@ -88,6 +88,7 @@ function Main(props){
                                                       base={base}
                                                       web3={props.web3}
                                                       authSignature={props.authSignature}
+                                                      description={row.description}
                                         />
                                     )
                             }

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 import { Button,Form } from 'react-bootstrap';
-import {ChevronLeft} from 'react-bootstrap-icons';
+import {ChevronLeft,DashCircle,PlusCircle} from 'react-bootstrap-icons';
 
 import './App.css';
 import erc20 from "./apis_abis";
@@ -18,6 +18,7 @@ function SynthProduct(props){
     const [submitState, setSubmitState] = useState(0);
     const [quantity, setQuantity] = useState(0);
     const [type, setType] = useState();
+    const [moreDetails, setMoreDetails] = useState(0);
 
 
     const approve = async()  =>{
@@ -139,22 +140,42 @@ function SynthProduct(props){
                     <p>{props.project} TVL @ {props.tvl}</p>
                     <hr/>
                     <div style={{display:'flex'}}>
-                        <p>Price:{' '}</p>
-                        <p>$ {props.price}</p>
+                        <p>Price:&nbsp;</p>
+                        <p>{props.price}&nbsp;{props.currencyName}</p>
                     </div>
                     <div style={{display:'flex'}}>
-                        <p>Expires:{' '}</p>
+                        <p>Expires:&nbsp;</p>
                         <p>{props.expires}</p>
                     </div>
                     <hr/>
-                    <p style={{textAlign:'start'}} >Details</p>
+                    {
+                        (moreDetails)?
+                            <div>
+                                <div style={{display:'flex', justifyContent:'flex start'}}>
+                                    <DashCircle style={{marginTop:5}} onClick={() => setMoreDetails(0)}/>
+                                    <p style={{marginLeft: 10}} onClick={() => setMoreDetails(0)}>Details</p>
+                                </div>
+                                <div  style={{textAlign:'start'}}>
+                                    <p>{props.description}</p>
+                                </div>
+                            </div>
+                            :
+                            <div>
+                                <div style={{display:'flex', justifyContent:'flex start'}}>
+                                    <PlusCircle style={{marginTop:5}} onClick={() => setMoreDetails(1)}/>
+                                    <p style={{marginLeft: 10}} onClick={() => setMoreDetails(1)}>Details</p>
+                                </div>
+                            </div>
+
+                    }
+
                     <hr/>
                     <Form style={{textAlign:'start'}}>
                         <Form.Group controlId="formQuantity">
                             <Form.Label>Quantity</Form.Label>
                             <Form.Control placeholder="" onChange={(e)=> {setQuantity(e.target.value)}}/>
                             <Form.Text className="text-muted">
-                                Collateral to lock {quantity*Number(props.price)} USDC
+                                Collateral to lock {quantity*Number(props.price)} {props.currencyName}
                             </Form.Text>
                         </Form.Group>
                     </Form>
@@ -188,20 +209,20 @@ function SynthProduct(props){
                     <div style={{display:'flex', flexDirection:'flex-start'}}>
                         <ChevronLeft color="slate" size={20} onClick={() => setScreen(0)}/>
                     </div>
-                    <p style={{marginTop:-20}} >Order Details</p>
+                    <p style={{marginTop:-20}} >Your Order</p>
                     <hr/>
                     <p>{props.project} TVL @ {props.tvl}</p>
                     <div style={{display:'flex'}}>
-                        <p>Quantity:{' '}</p>
+                        <p>Quantity:&nbsp;</p>
                         <p>{quantity}</p>
                     </div>
                     <div style={{display:'flex'}}>
-                        <p>Collateral:{' '}</p>
-                        <p>$ {quantity*Number(props.price)}</p>
+                        <p>Collateral:&nbsp;</p>
+                        <p>{quantity*Number(props.price)} {props.currencyName}</p>
                     </div>
                     <div style={{display:'flex'}}>
-                        <p>Max Payout:{' '}</p>
-                        <p>{2*quantity*Number(props.price)}</p>
+                        <p>Max Payout:&nbsp;</p>
+                        <p>{2*quantity*Number(props.price)} {props.currencyName}</p>
                     </div>
 
                     <div style={{marginTop: 20}}>
