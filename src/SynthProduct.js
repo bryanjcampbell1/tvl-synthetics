@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 
 import { Button,Form } from 'react-bootstrap';
+import {ChevronLeft} from 'react-bootstrap-icons';
 
 import './App.css';
 import erc20 from "./apis_abis";
@@ -185,9 +186,9 @@ function SynthProduct(props){
             {(screen === 1)?
                 <div style={box1}>
                     <div style={{display:'flex', flexDirection:'flex-start'}}>
-                        <Button style={{marginTop:-10}} onClick={() => setScreen(2)}>Back</Button>
+                        <ChevronLeft color="slate" size={20} onClick={() => setScreen(0)}/>
                     </div>
-                    <p style={{marginTop:-45}} >Order Details</p>
+                    <p style={{marginTop:-20}} >Order Details</p>
                     <hr/>
                     <p>{props.project} TVL @ {props.tvl}</p>
                     <div style={{display:'flex'}}>
