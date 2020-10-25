@@ -19,6 +19,11 @@ function SynthProduct(props){
     const [quantity, setQuantity] = useState(0);
     const [type, setType] = useState();
     const [moreDetails, setMoreDetails] = useState(0);
+    const [warning, setWarning] = useState("");
+
+    const warnings = ["Please enter a non-zero numerical value.",
+                        "You must connect a wallet to place an order."
+                    ];
 
 
     const approve = async()  =>{
@@ -131,6 +136,21 @@ function SynthProduct(props){
             })
     }
 
+    function setLongOrShort(derivativeType){
+
+        if( props.web3 == null){
+            setWarning("You must connect a wallet to place an order.");
+            setScreen(3);
+        }
+        else if( ( Number(quantity) == 0) || isNaN(quantity) ){
+            setWarning("Please enter a non-zero numerical value.");
+            setScreen(3);
+        }
+        else{
+            setType(derivativeType);
+            setScreen(1);
+        }
+    }
 
     return (
         <div>
@@ -182,22 +202,14 @@ function SynthProduct(props){
                     <div>
                         <Button variant="info"
                                 style={{width:200}}
-                                onClick={() => {
-                                                setScreen(1);
-                                                setType('ASK');
-                                            }
-                                        }
+                                onClick={() => setLongOrShort('ASK')}
                         >LONG</Button>
                     </div>
                     <br/>
                     <div>
                         <Button variant="info"
                                 style={{width:200}}
-                                onClick={() => {
-                                                setScreen(1);
-                                                setType('BID');
-                                            }
-                                        }
+                                onClick={() => setLongOrShort('BID')}
                         >SHORT</Button>
                     </div>
                 </div>
@@ -326,6 +338,28 @@ function SynthProduct(props){
                         }
                         }
                         >Done</Button>
+                    </div>
+                </div>
+                :
+                <div></div>
+            }
+            {(screen === 3) ?
+                <div style={box1}>
+                    <p>Warning!</p>
+                    <hr/>
+                    <div>
+                        <p style={{ marginBottom:300}}>
+                            {warning}
+                        </p>
+                    </div>
+                    <br/>
+                    <div>
+                        <Button style={{width:200, backgroundColor:'rgb(114,188,212)', borderColor:'rgb(114,188,212)'}} onClick={() => {
+                            setScreen(0);
+                            setQuantity(0);
+                        }
+                        }
+                        >OK</Button>
                     </div>
                 </div>
                 :
