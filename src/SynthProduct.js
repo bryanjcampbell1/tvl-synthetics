@@ -21,10 +21,6 @@ function SynthProduct(props){
     const [moreDetails, setMoreDetails] = useState(0);
     const [warning, setWarning] = useState("");
 
-    const warnings = ["Please enter a non-zero numerical value.",
-                        "You must connect a wallet to place an order."
-                    ];
-
 
     const approve = async()  =>{
         setSubmitState(1);

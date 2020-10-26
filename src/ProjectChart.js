@@ -88,7 +88,6 @@ function ProjectChart(props){
             projectName = 'opium-network';
         }
 
-
         const apiKey = '***********************';
         axios.get(`https://data-api.defipulse.com/api/v1/defipulse/api/GetHistory?project=${projectName}&api-key=${apiKey}`)
             .then(function (response) {

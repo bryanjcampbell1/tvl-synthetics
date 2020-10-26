@@ -91,7 +91,35 @@ class App extends React.Component {
                 <Row>
                     <Col xs={0} sm={1} md={2} lg={2}></Col>
                     <Col>
-                         <Main web3={this.state.web3} authSignature={this.state.authSignature} base={base} />
+                        <Main web3={this.state.web3} authSignature={this.state.authSignature} base={base} />
+                        <div>
+
+                            <div style={{marginTop:100}}>
+                                <p style={{fontSize:20,fontWeight:'bold'}}>What is a project's TVL?</p>
+                                <p style={{fontSize:18}}>
+                                    TVL stands for Total Value Locked.  It is a measure of the combined value of deposited assets in a protocol and is often used as a metric to track how successful a platform is.
+                                </p>
+                            </div>
+
+                            <div style={{marginTop:40}}>
+                                <p style={{fontSize:20,fontWeight:'bold'}}>Why do we need derivatives of a project's Total Locked Value?</p>
+                                <p style={{fontSize:18}}>
+                                    While many projects have a native token, speculation not usage is the main driver of token prices.
+                                    TVL Synths offer a new way to invest in the success of a project without fear of being dumped on by whales.
+                                </p>
+                            </div>
+
+                            <div style={{marginTop:40, marginBottom:300}}>
+                                <p style={{fontSize:20,fontWeight:'bold'}}>Are TVL Syths safe?</p>
+                                <p style={{fontSize:18}}>
+                                    Yes.  All derivatives are powered by the Opium Protocol which was audited by SmartDec.
+
+                                </p>
+                            </div>
+
+
+
+                        </div>
                     </Col>
                     <Col xs={0} sm={1} md={2} lg={2}></Col>
                 </Row>

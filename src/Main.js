@@ -16,7 +16,7 @@ const derivativesArray = [
         currencyName:"DAI",
         description:"At expiration the break even value of TVL in USD is $213,244. Any increase in TVL will result in a positive payout to the holder of the long token, " +
             "payed by the short token holder.  A decrease in TVL will result in a payout in the opposite direction. " +
-            "Payout value is proportional to the percent change in TVL, with a maximum payout of 2 times collateral. "+
+            "Payout value is proportional to the percent change in TVL, with a maximum payout of 2 times collateral when the TVL changes by 100%. "+
             "Orders are matched and payouts are managed via the Opium Exchange protocol. "+
             "Defipulse data is used as the price feed for derivative settlement."
     },
@@ -30,7 +30,7 @@ const derivativesArray = [
         description:"At expiration the break even value of TVL in USD is $74,244. " +
             "Any increase in TVL will result in a positive payout to the holder of the Long token," +
             "payed by the Short token holder.  A decrease in TVL will result in a payout in the opposite direction." +
-            "Payout value is proportional to the percent change in TVL, with a maximum payout of 2 times collateral"+
+            "Payout value is proportional to the percent change in TVL, with a maximum payout of 2 times collateral when the TVL changes by 100%.  "+
             "Orders are matched and payouts are managed via the Opium Exchange protocol."+
             "Defipulse data is used as the price feed for derivative settlement."
     }
