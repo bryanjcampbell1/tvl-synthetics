@@ -29,9 +29,21 @@ class App extends React.Component {
     }
 
     async loadWeb3(){
+
+
         const provider = await web3Modal.connect();
         const web3 = new Web3(provider);
+
+        console.log("provider here?");
+        console.log(provider);
+        console.log("web3 here?");
+        console.log(web3);
+
         let account = (await web3.eth.getAccounts())[0];
+
+
+        //let accounts = await web3.eth.getAccounts();
+        console.log(account);
         this.setState({ web3: web3, account: account });
 
         this.getAuthSignatureMetamask();
@@ -104,8 +116,8 @@ class App extends React.Component {
                             <div style={{marginTop:40}}>
                                 <p style={{fontSize:20,fontWeight:'bold'}}>Why do we need derivatives of a project's Total Locked Value?</p>
                                 <p style={{fontSize:18}}>
-                                    While many projects have a native token, speculation not usage is the main driver of token prices.
-                                    TVL Synths offer a new way to invest in the success of a project without fear of being dumped on by whales.
+                                    While many projects have a native token, speculation is the main driver of token prices.
+                                    TVL Synths offer a new way to invest in the success of a project that is tied to the platform's actual use.
                                 </p>
                             </div>
 
