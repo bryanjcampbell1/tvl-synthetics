@@ -95,7 +95,7 @@ class App extends React.Component {
                     >{(!this.state.account)?
                         "Unlock Wallet"
                         :
-                        `${this.state.account.substring(0,6)}`+'...'+`${this.state.account.slice(this.state.account.length - 4)}`
+                        `${this.state.account.substring(0,6)}...${this.state.account.slice(this.state.account.length - 4)}`
                     }</Button>
                 </div>
 
@@ -117,7 +117,7 @@ class App extends React.Component {
                                 <p style={{fontSize:20,fontWeight:'bold'}}>Why do we need derivatives of a project's Total Locked Value?</p>
                                 <p style={{fontSize:18}}>
                                     While many projects have a native token, speculation is the main driver of token prices.
-                                    TVL Synths offer a new way to invest in the success of a project that is tied to the platform's actual use.
+                                    TVL Synths offer a new way to invest in the success of a project, tied to the platform's actual use!
                                 </p>
                             </div>
 

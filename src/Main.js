@@ -6,8 +6,6 @@ import ProjectChart from "./ProjectChart";
 import SynthProduct from './SynthProduct';
 
 
-
-
 const derivativesArray = [
     {  project:"Aave",
         tvl:'$213,244',

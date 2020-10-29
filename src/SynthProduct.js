@@ -85,8 +85,6 @@ function SynthProduct(props){
 
     async function signOrder(orderMessage,id){
         console.log("order message ", orderMessage)
-        //console.log("signed order message ", await signMessage(orderMessage))
-
 
         const fromAddress = (await this.state.web3.eth.getAccounts())[0];
 
@@ -138,7 +136,7 @@ function SynthProduct(props){
             setWarning("You must connect a wallet to place an order.");
             setScreen(3);
         }
-        else if( ( Number(quantity) == 0) || isNaN(quantity) ){
+        else if( ( Number(quantity) === 0) || isNaN(quantity) ){
             setWarning("Please enter a non-zero numerical value.");
             setScreen(3);
         }
