@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import {Row, Col, Form} from 'react-bootstrap';
 
 import ProjectChart from "./ProjectChart";
 import SynthProduct from './SynthProduct';
+
+
 
 
 const derivativesArray = [
@@ -35,7 +37,6 @@ const derivativesArray = [
             "Defipulse data is used as the price feed for derivative settlement."
     }
 ];
-
 
 
 function Main(props){
