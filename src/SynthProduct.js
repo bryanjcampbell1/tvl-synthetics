@@ -2,10 +2,8 @@ import React, {useState} from 'react';
 
 import { Button,Form } from 'react-bootstrap';
 import {ChevronLeft,DashCircle,PlusCircle} from 'react-bootstrap-icons';
-
 import './App.css';
 import erc20 from "./apis_abis";
-
 const axios = require('axios');
 
 
@@ -27,6 +25,7 @@ function SynthProduct(props){
         await approveSpend();
         setSubmitState(2);
     }
+
 
     const  approveSpend= async() => {
 

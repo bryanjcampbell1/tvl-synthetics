@@ -1,46 +1,54 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import {Row, Col, Form} from 'react-bootstrap';
 
 import ProjectChart from "./ProjectChart";
 import SynthProduct from './SynthProduct';
 
+import firebase from './firebase';
+require("firebase/firestore");
 
-const derivativesArray = [
-    {  project:"Aave",
-        tvl:'$213,244',
-        expires:'11/20/20 at 5:00 PM EST',
-        price:'21.3244',
-        opiumId:'adadtgadgadgadgat',
-        currency: "0xb16f2a1cebE5D195a7e3b1D5B5fecd30820E894a",//DAI
-        currencyName:"DAI",
-        description:"At expiration the break even value of TVL in USD is $213,244. Any increase in TVL will result in a positive payout to the holder of the long token, " +
-            "payed by the short token holder.  A decrease in TVL will result in a payout in the opposite direction. " +
-            "Payout value is proportional to the percent change in TVL, with a maximum payout of 2 times collateral when the TVL changes by 100%. "+
-            "Orders are matched and payouts are managed via the Opium Exchange protocol. "+
-            "Defipulse data is used as the price feed for derivative settlement."
-    },
-    {  project:"Opium Network",
-        tvl:'$74,244',
-        expires:'11/20/20 at 5:00 PM EST',
-        price:'74.244',
-        opiumId:'adadatbsfbab',
-        currency: "0xb16f2a1cebE5D195a7e3b1D5B5fecd30820E894a",//DAI
-        currencyName:"DAI",
-        description:"At expiration the break even value of TVL in USD is $74,244. " +
-            "Any increase in TVL will result in a positive payout to the holder of the Long token," +
-            "payed by the Short token holder.  A decrease in TVL will result in a payout in the opposite direction." +
-            "Payout value is proportional to the percent change in TVL, with a maximum payout of 2 times collateral when the TVL changes by 100%.  "+
-            "Orders are matched and payouts are managed via the Opium Exchange protocol."+
-            "Defipulse data is used as the price feed for derivative settlement."
-    }
-];
+var db = firebase.firestore();
 
 
 function Main(props){
     const base = props.base;
 
     const [project, setProject] = useState("Aave");
+    const [activeDerivatives,setActiveDerivatives] = useState([]);
+
+    useEffect(() => {
+        getProductList();
+    },[]);
+
+    const  getProductList = async () => {
+        try {
+
+            let derivatives = db.collection("derivatives");
+            //let query = derivatives.where("expired", "==", false);
+
+            let products = []
+
+            await derivatives.get()
+                .then(function(querySnapshot) {
+                    querySnapshot.forEach(function(doc) {
+                        // doc.data() is never undefined for query doc snapshots
+                        console.log(doc.id, " => ", doc.data());
+                        products.push(doc.data());
+
+                    });
+                })
+                .catch(function(error) {
+                    console.log("Error getting documents: ", error);
+                });
+
+            console.log(products);
+            setActiveDerivatives(products);
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return(
 
@@ -74,7 +82,7 @@ function Main(props){
                     <Col>
                         <div >
                             {
-                                derivativesArray
+                                activeDerivatives
                                     .filter(i => (i.project === project) )
                                     .map((row, key) =>
                                         <SynthProduct project={row.project}
