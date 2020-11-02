@@ -3,6 +3,12 @@ import './App.css';
 import moment from 'moment';
 
 import {Line} from 'react-chartjs-2';
+
+import firebase from './firebase';
+require("firebase/firestore");
+
+var db = firebase.firestore();
+
 const axios = require('axios');
 
 moment().format();
@@ -82,29 +88,41 @@ function ProjectChart(props){
     const loadProject = async(e) => {
 
         let projectName = e.toString();
-        if(e === 'Opium Network'){
+
+        if(e === 'Aave'){
+            projectName = 'aave';
+        }
+        else if(e === 'Opium Network'){
             projectName = 'opium-network';
         }
+        else if(e === 'Maker'){
+            projectName = 'maker';
+        }
 
-        const apiKey = process.env.REACT_APP_DEFIPULSE;
 
-        axios.get(`https://data-api.defipulse.com/api/v1/defipulse/api/GetHistory?project=${projectName}&api-key=${apiKey}`)
-            .then(function (response) {
 
-                let chartData = [];
+        let chart = db.collection("Charts").doc(projectName);
 
-                for(let i =0; i < response.data.length; i++){
+        chart.get().then(function(doc) {
+            if (doc.exists) {
+                console.log("Document data:", doc.data());
+
+                let c = [];
+
+                for(let i =0; i < doc.data().chartData.length; i++){
 
                     let point = {
                         x: moment(0),
                         y: 0
                     };
 
-                    point.x = moment(response.data[i].timestamp*1000);
-                    point.y = response.data[i].tvlUSD;
+                    point.x = moment(doc.data().chartData[i].x);
+                    point.y = doc.data().chartData[i].y;
 
-                    chartData.push(point);
+                    c.push(point);
                 }
+
+
 
                 let gData = {
                     labels: [],
@@ -128,15 +146,19 @@ function ProjectChart(props){
                             pointHoverBorderWidth: 2,
                             pointRadius: 1,
                             pointHitRadius: 10,
-                            data: chartData
+                            data: c
                         }
                     ]
                 }
 
                 setGraphData(gData);
 
-                let lastValue = chartData[0].y;
+                let lastValue = doc.data().chartData[0].y;
+                console.log('lastValue');
+                console.log(lastValue);
+
                 let value = '';
+
 
                 if(parseInt(lastValue) >= 1000){
                     value =  '$' + lastValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -146,10 +168,13 @@ function ProjectChart(props){
 
                 setTvlUSD(value);
 
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
+            } else {
+                // doc.data() will be undefined in this case
+                console.log("No such document!");
+            }
+        }).catch(function(error) {
+            console.log("Error getting document:", error);
+        });
 
     }
 

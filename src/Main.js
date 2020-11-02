@@ -7,7 +7,6 @@ import SynthProduct from './SynthProduct';
 
 import firebase from './firebase';
 require("firebase/firestore");
-
 var db = firebase.firestore();
 
 
@@ -71,6 +70,7 @@ function Main(props){
                                       onChange={(e)=> setProject(e.target.value)}>
                             <option>Aave</option>
                             <option>Opium Network</option>
+                            <option>Maker</option>
                         </Form.Control>
                     </Form.Group>
                 </Form>
