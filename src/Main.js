@@ -13,7 +13,7 @@ var db = firebase.firestore();
 function Main(props){
     const base = props.base;
 
-    const [project, setProject] = useState("Aave");
+    const [project, setProject] = useState("All Projects");
     const [activeDerivatives,setActiveDerivatives] = useState([]);
 
     useEffect(() => {
@@ -68,9 +68,12 @@ function Main(props){
                         <Form.Label>Protocol Name</Form.Label>
                         <Form.Control as="select"
                                       onChange={(e)=> setProject(e.target.value)}>
+                            <option>All Projects</option>
                             <option>Aave</option>
                             <option>Opium Network</option>
                             <option>Maker</option>
+                            <option>Harvest Finance</option>
+                            <option>Sushi Swap</option>
                         </Form.Control>
                     </Form.Group>
                 </Form>

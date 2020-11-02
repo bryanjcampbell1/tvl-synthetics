@@ -14,6 +14,7 @@ const store = admin.firestore();
 // artist array will be kept in db and queried for cloud functs
 
 let projectsArray = [
+    'all',
     'aave',
     'opium-network',
     'harvest-finance',
@@ -21,7 +22,7 @@ let projectsArray = [
     'sushiswap'
 ];
 
-exports.updateCharts = functions.pubsub.schedule('every 2 minutes').onRun( async (context) => {
+exports.updateCharts = functions.pubsub.schedule('every 12 hours').onRun( async (context) => {
 
     for (let i= 0; i<projectsArray.length; i++) {
         await updateChart(projectsArray[i]);
@@ -36,8 +37,16 @@ async function updateChart(projectName){
 
     const apiKey = '';
 
-    const response = await axios.get(`https://data-api.defipulse.com/api/v1/defipulse/api/GetHistory?project=${projectName}&api-key=${apiKey}`)
+    let url = ''
 
+    if(projectName === 'all'){
+        url = `https://data-api.defipulse.com/api/v1/defipulse/api/GetHistory?period=1y&api-key=${apiKey}`
+    }
+    else{
+        url = `https://data-api.defipulse.com/api/v1/defipulse/api/GetHistory?project=${projectName}&api-key=${apiKey}`
+    }
+
+    const response = await axios.get(url)
     for(let i =0; i < response.data.length; i++){
 
         let point = {

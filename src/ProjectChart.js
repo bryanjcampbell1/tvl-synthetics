@@ -6,10 +6,8 @@ import {Line} from 'react-chartjs-2';
 
 import firebase from './firebase';
 require("firebase/firestore");
-
 var db = firebase.firestore();
 
-const axios = require('axios');
 
 moment().format();
 
@@ -89,7 +87,10 @@ function ProjectChart(props){
 
         let projectName = e.toString();
 
-        if(e === 'Aave'){
+        if(e === 'All Projects'){
+            projectName = 'all';
+        }
+        else if(e === 'Aave'){
             projectName = 'aave';
         }
         else if(e === 'Opium Network'){
@@ -97,6 +98,15 @@ function ProjectChart(props){
         }
         else if(e === 'Maker'){
             projectName = 'maker';
+        }
+        else if(e === 'Sushi Swap'){
+            projectName = 'sushiswap';
+        }
+        else if(e === 'Harvest Finance'){
+            projectName = 'harvest-finance';
+        }
+        else{
+            console.log("Something is wrong");
         }
 
 
