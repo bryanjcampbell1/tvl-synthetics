@@ -5,16 +5,16 @@ function Banner() {
         <div style={{textAlign:'center'}}>
             <p style={{
                 fontFamily: "Arial, Helvetica, sans-serif",
-                fontSize: 75,
+                fontSize: 70,
                 fontStyle: "italic",
                 fontVariant: "normal",
                 fontWeight: '900',
                 color:'rgb(22,162,185)'
-            }}>TVL SYNTHS</p>
+            }}>TVL Synths</p>
 
             <p style={{
                 fontFamily: "Arial, Helvetica, sans-serif",
-                fontSize: 20,
+                fontSize: 15,
                 fontVariant: "normal",
                 fontWeight: '900',
                 color:'rgb(22,162,185)'

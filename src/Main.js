@@ -3,15 +3,14 @@ import './App.css';
 import {Row, Col, Form} from 'react-bootstrap';
 
 import ProjectChart from "./ProjectChart";
-import SynthProduct from './SynthProduct';
 
 import firebase from './firebase';
+import UMASynth from "./UMASynth";
 require("firebase/firestore");
 var db = firebase.firestore();
 
 
 function Main(props){
-    const base = props.base;
 
     const [project, setProject] = useState("All Projects");
     const [activeDerivatives,setActiveDerivatives] = useState([]);
@@ -65,7 +64,6 @@ function Main(props){
 
                 <Form>
                     <Form.Group  controlId="currency" style={{marginTop:15}}>
-                        <Form.Label>Protocol Name</Form.Label>
                         <Form.Control as="select"
                                       onChange={(e)=> setProject(e.target.value)}>
                             <option>All Projects</option>
@@ -88,17 +86,14 @@ function Main(props){
                                 activeDerivatives
                                     .filter(i => (i.project === project) )
                                     .map((row, key) =>
-                                        <SynthProduct project={row.project}
-                                                      tvl={row.tvl}
-                                                      expires={row.expires}
-                                                      price={row.price}
-                                                      opiumID={row.opiumId}
-                                                      currency={row.currency}
-                                                      currencyName={row.currencyName}
-                                                      base={base}
-                                                      web3={props.web3}
-                                                      authSignature={props.authSignature}
-                                                      description={row.description}
+                                        <UMASynth project={row.project}
+                                                  tokenName={row.tokenName}
+                                                  tokenAddress={row.tokenAddress}
+                                                  expires={row.expires}
+                                                  collateralToken={row.collateralToken}
+                                                  collateralAddress={row.collateralAddress}
+                                                  web3={props.web3}
+                                                  description={row.description}
                                         />
                                     )
                             }

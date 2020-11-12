@@ -8,13 +8,6 @@ import Header from "./Header";
 import Banner from "./Banner";
 import web3Modal from "./WalletModal";
 
-const axios = require('axios');
-
-//Opium Globals
-//const base = `https://api-test.opium.exchange/v1/`; //RINKEBY
-const base = `https://api.opium.exchange/v1/`; //MAINNET
-
-
 class App extends React.Component {
 
     constructor() {
@@ -30,52 +23,11 @@ class App extends React.Component {
 
     async loadWeb3(){
 
-
         const provider = await web3Modal.connect();
         const web3 = new Web3(provider);
-
-        console.log("provider here?");
-        console.log(provider);
-        console.log("web3 here?");
-        console.log(web3);
-
         let account = (await web3.eth.getAccounts())[0];
 
-
-        //let accounts = await web3.eth.getAccounts();
-        console.log(account);
         this.setState({ web3: web3, account: account });
-
-        this.getAuthSignatureMetamask();
-    }
-
-    async getAuthSignatureMetamask(){
-
-        let that = this;
-        const fromAddress = (await this.state.web3.eth.getAccounts())[0];
-
-        const url = base + `auth/loginData`;
-        const result = await axios.get(url);
-        const originalMessage = result.data;
-        let data = JSON.stringify(originalMessage);
-
-        this.state.web3.currentProvider.sendAsync(
-            {
-                method: "eth_signTypedData_v3",
-                params: [fromAddress, data],
-                from: fromAddress
-            },
-            function(err, result) {
-                if (err) {
-                    return console.error(err);
-                }
-                const signature = result.result;
-
-                console.log("authSignature ", signature);
-                that.setState({authSignature:signature});
-
-            }
-        );
 
     }
 
@@ -103,8 +55,8 @@ class App extends React.Component {
                 <Row>
                     <Col xs={0} sm={1} md={2} lg={2}></Col>
                     <Col>
-                        <Main web3={this.state.web3} authSignature={this.state.authSignature} base={base} />
-                        <div>
+                        <Main web3={this.state.web3} />
+                        <div style={{padding:20}}>
 
                             <div style={{marginTop:100}}>
                                 <p style={{fontSize:20,fontWeight:'bold'}}>What is a project's TVL?</p>
@@ -124,7 +76,7 @@ class App extends React.Component {
                             <div style={{marginTop:40, marginBottom:300}}>
                                 <p style={{fontSize:20,fontWeight:'bold'}}>Are TVL Syths safe?</p>
                                 <p style={{fontSize:18}}>
-                                    Yes.  All derivatives are powered by the Opium Protocol which was audited by SmartDec.
+                                    Yes.  All derivatives are powered by the UMA protocol audited by  Openzeppelin Security.
 
                                 </p>
                             </div>
