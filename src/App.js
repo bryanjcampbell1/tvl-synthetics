@@ -56,7 +56,9 @@ class App extends React.Component {
 
                     <div style={{
                         display:'flex',
-                        marginTop:-8
+                        justifyContent:'center',
+                        marginTop:-8,
+                        marginLeft:-50
                     }}>
                         <p onClick={() => this.setState({page:'home'})}
                            style={{
