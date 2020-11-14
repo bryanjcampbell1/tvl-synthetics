@@ -14,7 +14,7 @@ function Home(props){
                     fontVariant: "normal",
                     fontWeight: '900',
                     color:'rgb(22,162,185)'
-                }}> Derivatives For Your Favorite DeFi Protocols </p>
+                }}> TVL Derivatives For Your Favorite DeFi Protocols </p>
             </div>
             <Row>
                 <Col xs={0} sm={1} md={2} lg={2}></Col>

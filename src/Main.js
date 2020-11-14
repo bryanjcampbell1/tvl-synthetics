@@ -76,8 +76,6 @@ function Main(props){
                     </Form.Group>
                 </Form>
 
-                <p> Derivative Products</p>
-
                 <Row>
                     <Col xs={0} sm={1} md={2} lg={2} ></Col>
                     <Col>
