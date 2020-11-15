@@ -1,10 +1,14 @@
 import {Button, Form} from "react-bootstrap";
-import React from "react";
+import React, {useState} from "react";
 import erc20 from "./apis_abis";
 import abis from "./abis.js";
 import addresses from "./addresses";
 
 function Mint(props) {
+
+    const [mintAmount, setMintAmount ] = useState(0);
+    const [collateralAmount, setCollateralAmount] = useState(0);
+
 
     const approve = async()  =>{
         console.log('inside approve');
@@ -38,12 +42,9 @@ function Mint(props) {
 
     const  sponsorShares= async() => {
 
-        let synthTokenAmount = this.state.quantity;
-        let collateralTokenAmount = this.state.quantity*1.5;
-
         let empContract = new this.state.web3.eth.Contract(abis.empABI, addresses.empContract);
 
-        await empContract.methods.create({ rawValue: this.state.web3.utils.toWei(collateralTokenAmount.toString() ) }, { rawValue: this.state.web3.utils.toWei(synthTokenAmount.toString() ) }).send({from: this.state.accounts[0]})
+        await empContract.methods.create({ rawValue: this.state.web3.utils.toWei(collateralAmount.toString() ) }, { rawValue: this.state.web3.utils.toWei(mintAmount.toString() ) }).send({from: this.state.accounts[0]})
             .then(function(receipt){
                 // receipt can also be a new contract instance, when coming from a "contract.deploy({...}).send()"
             });

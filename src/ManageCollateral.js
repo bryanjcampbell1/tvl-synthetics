@@ -1,10 +1,53 @@
 import React, {useEffect, useState} from 'react';
 import {Row, Col, Form,Button} from 'react-bootstrap';
 
+import abis from "./abis.js";
+import addresses from "./addresses";
+
 
 
 
 function ManageCollateral(props) {
+
+    const [amount, setAmount] = useState(0);
+    const [withdrawAmount, setWithdrawAmount] = useState(0);
+
+
+    const  addCollateral = async() => {
+
+        let emp = new this.state.web3.eth.Contract(abis.empABI, addresses.empContract);
+
+        await emp.methods.deposit({ rawValue: this.state.web3.utils.toWei(`${amount}`) }).send({from: this.state.accounts[0]})
+            .then(function(receipt){
+                // receipt can also be a new contract instance, when coming from a "contract.deploy({...}).send()"
+                console.log(receipt);
+            });
+
+    }
+
+    const  requestWithdraw = async() => {
+
+        let emp = new this.state.web3.eth.Contract(abis.empABI, addresses.empContract);
+
+        await emp.methods.requestWithdrawal({ rawValue: this.state.web3.utils.toWei(`${amount}`) }).send({from: this.state.accounts[0]})
+            .then(function(receipt){
+                // receipt can also be a new contract instance, when coming from a "contract.deploy({...}).send()"
+                console.log(receipt);
+            });
+
+    }
+
+    const  withdrawAfterLiveness = async() => {
+
+        let emp = new this.state.web3.eth.Contract(abis.empABI, addresses.empContract);
+
+        await emp.methods.withdrawPassedRequest().send({from: this.state.accounts[0]})
+            .then(function(receipt){
+                // receipt can also be a new contract instance, when coming from a "contract.deploy({...}).send()"
+                console.log(receipt);
+            });
+
+    }
 
     return(
         <div style={{
@@ -33,11 +76,13 @@ function ManageCollateral(props) {
                 </Form>
                 <div style={{marginTop: 10}}>
                     <Button
+                        onClick={() => { addCollateral() }}
                         style={{width: '100%'}}
                         variant="info"
                     >DEPOSIT</Button>
 
                     <Button
+                        onClick={() => { requestWithdraw() }}
                         style={{width: '100%', marginTop: 10}}
                         variant="info"
                     >REQUEST WITHDRAW</Button>
@@ -60,18 +105,14 @@ function ManageCollateral(props) {
 
             </div>
 
-            <div style={{width:'90%', marginTop:30}}>
+            <div style={{width:'90%', marginTop:20}}>
                 <p style={{
                     fontSize: 16,
                     fontWeight: '500',
-                    marginTop:10
-                }}>Currently Available to Withdaw: 0</p>
-                <Form>
-                    <Form.Group controlId="formWithdraw">
-                        <Form.Control type="quantity" placeholder="Withdraw amount" />
-                    </Form.Group>
-                </Form>
+                }}> In order to "Withdraw" at least 2 hours must have passed since initiating a "Request Withdraw" transaction.</p>
+
                 <Button
+                    onClick={() => { withdrawAfterLiveness() }}
                     style={{width: '100%', marginTop: 10}}
                     variant="info"
                 >WITHDRAW</Button>

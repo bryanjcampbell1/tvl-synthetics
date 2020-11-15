@@ -75,10 +75,10 @@ function Portfolio(props){
                         width:'60%'
                     }}>
                         <div style={{marginLeft:40,marginTop:-20}}>
-                            {(action === 'mint')? <Mint/> : <div></div>}
-                            {(action === 'manage')? <ManageCollateral/> : <div></div>}
-                            {(action === 'redeemEarly')? <RedeemEarly/> : <div></div>}
-                            {(action === 'redeem')? <RedeemAtExpiration/> : <div></div>}
+                            {(action === 'mint')? <Mint web3={props.web3}/> : <div></div>}
+                            {(action === 'manage')? <ManageCollateral web3={props.web3}/> : <div></div>}
+                            {(action === 'redeemEarly')? <RedeemEarly web3={props.web3}/> : <div></div>}
+                            {(action === 'redeem')? <RedeemAtExpiration web3={props.web3}/> : <div></div>}
                         </div>
                     </div>
                 </div>
