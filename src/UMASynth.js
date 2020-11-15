@@ -7,6 +7,7 @@ import './App.css';
 import erc20 from "./apis_abis";
 
 import Mint from "./Mint";
+import Main from "./Main";
 
 const axios = require('axios');
 
@@ -19,33 +20,6 @@ function UMASynth(props){
     const [type, setType] = useState();
     const [moreDetails, setMoreDetails] = useState(0);
     const [warning, setWarning] = useState("");
-
-
-    const approve = async()  =>{
-        setSubmitState(1);
-        await approveSpend();
-        setSubmitState(2);
-    }
-
-
-    const  approveSpend= async() => {
-
-        const fromAddress = (await props.web3.eth.getAccounts())[0];
-
-        // Instantiate contract
-        const tokenContract = new props.web3.eth.Contract(erc20.abi,"0xb16f2a1cebE5D195a7e3b1D5B5fecd30820E894a" );
-        const toAddress = "0xE39b9D5dC766102181D4C5Cd7df1691565B52032";
-
-        // Calculate contract compatible value for approve with proper decimal points using BigNumber
-        const tokenDecimals = props.web3.utils.toBN(18);
-        const tokenAmountToApprove = props.web3.utils.toBN(999000000000);
-        const calculatedApproveValue = props.web3.utils.toHex(tokenAmountToApprove.mul(props.web3.utils.toBN(10).pow(tokenDecimals)));
-
-        await tokenContract.methods.approve(
-            toAddress,
-            calculatedApproveValue
-        ).send({from: fromAddress})
-    }
 
 
     return (
@@ -71,6 +45,7 @@ function UMASynth(props){
                         <div style={{marginTop:40}}>
                             <Button variant="info"
                                     style={{width:300}}
+                                    href="https://app.uniswap.org/#/swap?inputCurrency=0x429881672b9ae42b8eba0e26cd9c73711b891ca5&outputCurrency=ETH"
                             >BUY / SELL</Button>
                         </div>
                         <br/>
@@ -78,13 +53,13 @@ function UMASynth(props){
                             <Button variant="info"
                                     style={{width:300}}
                                     onClick={() => setScreen(1)}
-
                             >MINT</Button>
                         </div>
                         <br/>
                         <div>
                             <Button variant="info"
                                     style={{width:300}}
+                                    href="https://app.uniswap.org/#/add/0x429881672b9ae42b8eba0e26cd9c73711b891ca5/ETH"
                             >PROVIDE LIQUIDITY</Button>
                         </div>
                         <div style={{display:'flex', justifyContent:'center'}}>
@@ -128,7 +103,7 @@ function UMASynth(props){
                         />
                     </div>
                     <div style={{marginTop:20}}>
-                        <Mint />
+                        <Mint web3={props.web3} />
                     </div>
                 </div>
                 :
@@ -159,3 +134,5 @@ const box = {
 }
 
 export default UMASynth;
+
+
