@@ -6,7 +6,11 @@ function About(props){
 
     return(
         <div style={{height:800}}>
-            <p >yo mamma</p>
+            <p >  </p>
+            <p >  </p>
+            <p >what is uma</p>
+            <p >the audit</p>
+            <p >the contracts</p>
         </div>
     );
 }
