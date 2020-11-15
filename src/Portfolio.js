@@ -5,11 +5,56 @@ import {Row, Col, Form,Button} from 'react-bootstrap';
 function Mint(props) {
 
     return(
-        <div>
+        <div style={{
+            display:'flex',
+            flexDirection:'column',
+            alignItems:'center'
+        }}>
             <p style={{fontSize: 18,
                 fontWeight: '600',
                 margin:20
             }}>Mint Tokens</p>
+
+            <div style={{width:'90%'}}>
+
+                <p style={{
+                    fontSize: 16,
+                    fontWeight: '500',
+                    marginTop:10
+                }}>Collateral Type: DAI</p>
+                <p style={{
+                    fontSize: 16,
+                    fontWeight: '500',
+                    marginTop:10
+                }}>Minimum Collateral Ratio: 1.5</p>
+
+                <Form>
+                    <Form.Group controlId="formQuantityMint">
+                        <Form.Control type="quantity" placeholder="Minting Amount" />
+                    </Form.Group>
+                </Form>
+
+                <Form>
+                    <Form.Group controlId="formQuantityCollateral">
+                        <Form.Control type="quantity" placeholder="Collateral Amount" />
+                    </Form.Group>
+                </Form>
+
+                <div style={{marginTop: 10}}>
+                    <Button
+                        style={{width: '100%'}}
+                        variant="info"
+                    >APPROVE</Button>
+                </div>
+
+                <div style={{marginTop: 10}}>
+                    <Button
+                        style={{width: '100%'}}
+                        variant="info"
+                    >MINT</Button>
+                </div>
+
+            </div>
 
 
         </div>
@@ -19,11 +64,76 @@ function Mint(props) {
 function ManageCollateral(props) {
 
     return(
-        <div>
-            <p style={{fontSize: 18,
+        <div style={{
+            display:'flex',
+            flexDirection:'column',
+            alignItems:'center'
+        }}>
+            <p style={{
+                fontSize: 20,
                 fontWeight: '600',
-                margin:20
+                marginTop:20
             }}>Manage Collateral</p>
+
+            <div style={{width:'90%'}}>
+
+                <p style={{
+                    fontSize: 16,
+                    fontWeight: '500',
+                    marginTop:10
+                }}>Collateral Type: DAI</p>
+
+                <Form>
+                    <Form.Group controlId="formQuantity">
+                        <Form.Control type="quantity" placeholder="Enter amount" />
+                    </Form.Group>
+                </Form>
+                <div style={{marginTop: 10}}>
+                    <Button
+                        style={{width: '100%'}}
+                        variant="info"
+                    >DEPOSIT</Button>
+
+                    <Button
+                        style={{width: '100%', marginTop: 10}}
+                        variant="info"
+                    >REQUEST WITHDRAW</Button>
+                </div>
+
+            </div>
+
+            <div style={{width:'90%',marginTop:30}}>
+                <p style={{
+                    fontSize: 16,
+                    fontWeight: '500',
+                    marginTop:10
+                }}>My Collateral Ratio: 1.8</p>
+
+                <p style={{
+                    fontSize: 16,
+                    fontWeight: '500',
+                    marginTop:10
+                }}>Minimum Collateral Ratio: 1.5</p>
+
+            </div>
+
+            <div style={{width:'90%', marginTop:30}}>
+                <p style={{
+                    fontSize: 16,
+                    fontWeight: '500',
+                    marginTop:10
+                }}>Currently Available to Withdaw: 0</p>
+                <Form>
+                    <Form.Group controlId="formWithdraw">
+                        <Form.Control type="quantity" placeholder="Withdraw amount" />
+                    </Form.Group>
+                </Form>
+                <Button
+                    style={{width: '100%', marginTop: 10}}
+                    variant="info"
+                >WITHDRAW</Button>
+            </div>
+
         </div>
     );
 }
@@ -31,11 +141,44 @@ function ManageCollateral(props) {
 function RedeemEarly(props) {
 
     return(
-        <div>
-            <p style={{fontSize: 18,
+        <div style={{
+            display:'flex',
+            flexDirection:'column',
+            alignItems:'center'
+        }}>
+            <p style={{
+                fontSize: 18,
                 fontWeight: '600',
-                margin:20
+                marginTop:20
             }}>Redeem Early</p>
+
+            <div style={{width:'90%'}}>
+                <p >Token sponsors can redeem tokens even before the expiration date. Redeeming tokens will drop your minted balance.</p>
+
+
+                <Form>
+                    <Form.Group controlId="formQuantityRedeem">
+                        <Form.Control type="quantity" placeholder="Redeem Amount" />
+                    </Form.Group>
+                </Form>
+
+                <div style={{marginTop: 10}}>
+                    <Button
+                        style={{width: '100%'}}
+                        variant="info"
+                    >APPROVE</Button>
+                </div>
+
+                <div style={{marginTop: 10}}>
+                    <Button
+                        style={{width: '100%'}}
+                        variant="info"
+                    >REDEEM EARLY</Button>
+                </div>
+
+
+
+            </div>
         </div>
     );
 }
@@ -68,8 +211,6 @@ function RedeemAtExpiration(props) {
                 href="https://docs.umaproject.org/tutorials/redeem-tokens"
                 variant="info"
             >Tutorial</Button>
-
-
 
         </div>
     );
