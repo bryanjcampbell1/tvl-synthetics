@@ -1,10 +1,13 @@
 import {Button, Form} from "react-bootstrap";
 import React from "react";
 import erc20 from "./apis_abis";
+import abis from "./abis.js";
+import addresses from "./addresses";
 
 function Mint(props) {
 
     const approve = async()  =>{
+        console.log('inside approve');
         await approveSpend();
     }
 
@@ -12,6 +15,10 @@ function Mint(props) {
     const  approveSpend= async() => {
 
         const fromAddress = (await props.web3.eth.getAccounts())[0];
+
+        console.log('fromAddress');
+        console.log(fromAddress);
+
 
         // Instantiate contract
         const tokenContract = new props.web3.eth.Contract(erc20.abi,"0xb16f2a1cebE5D195a7e3b1D5B5fecd30820E894a" );
@@ -26,6 +33,22 @@ function Mint(props) {
             toAddress,
             calculatedApproveValue
         ).send({from: fromAddress})
+    }
+
+
+    const  sponsorShares= async() => {
+
+        let synthTokenAmount = this.state.quantity;
+        let collateralTokenAmount = this.state.quantity*1.5;
+
+        let empContract = new this.state.web3.eth.Contract(abis.empABI, addresses.empContract);
+
+        await empContract.methods.create({ rawValue: this.state.web3.utils.toWei(collateralTokenAmount.toString() ) }, { rawValue: this.state.web3.utils.toWei(synthTokenAmount.toString() ) }).send({from: this.state.accounts[0]})
+            .then(function(receipt){
+                // receipt can also be a new contract instance, when coming from a "contract.deploy({...}).send()"
+            });
+
+        this.setState({screen:3})
     }
 
     return(
@@ -66,6 +89,7 @@ function Mint(props) {
 
                 <div style={{marginTop: 10}}>
                     <Button
+                        onClick={() => { approve() }}
                         style={{width: '100%'}}
                         variant="info"
                     >APPROVE</Button>
@@ -73,6 +97,7 @@ function Mint(props) {
 
                 <div style={{marginTop: 10}}>
                     <Button
+                        onClick={() => { sponsorShares() }}
                         style={{width: '100%'}}
                         variant="info"
                     >MINT</Button>
