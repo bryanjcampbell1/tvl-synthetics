@@ -105,6 +105,9 @@ function ProjectChart(props){
         else if(e === 'Harvest Finance'){
             projectName = 'harvest-finance';
         }
+        else if(e === 'Sushi Uni TVL Ratio'){
+            projectName = 'sushiswap-uniswap';
+        }
         else{
             console.log("Something is wrong");
         }
@@ -164,6 +167,8 @@ function ProjectChart(props){
                 setGraphData(gData);
 
                 let lastValue = doc.data().chartData[0].y;
+
+                /*
                 console.log('lastValue');
                 console.log(lastValue);
 
@@ -171,12 +176,15 @@ function ProjectChart(props){
 
 
                 if(parseInt(lastValue) >= 1000){
-                    value =  '$' + lastValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    value =   lastValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 } else {
-                    value =  '$' + lastValue;
+                    value =   lastValue;
                 }
+                */
 
-                setTvlUSD(value);
+
+                setTvlUSD(lastValue);
+                props.currentVal(lastValue);
 
             } else {
                 // doc.data() will be undefined in this case

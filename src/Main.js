@@ -15,6 +15,8 @@ function Main(props){
     const [project, setProject] = useState("All Projects");
     const [activeDerivatives,setActiveDerivatives] = useState([]);
 
+    const [currentValue, setCurrentValue] = useState();
+
     useEffect(() => {
         getProductList();
     },[]);
@@ -60,7 +62,7 @@ function Main(props){
                 textAlign:'center'
             }}>
 
-                <ProjectChart project={project}  />
+                <ProjectChart project={project}  currentVal={ (e) => setCurrentValue(e) }/>
 
                 <Form>
                     <Form.Group  controlId="currency" style={{marginTop:15}}>
@@ -68,15 +70,12 @@ function Main(props){
                                       onChange={(e)=> setProject(e.target.value)}>
                             <option>All Projects</option>
                             <option>Aave</option>
-                            <option>Opium Network</option>
-                            <option>Maker</option>
-                            <option>Harvest Finance</option>
-                            <option>Sushi Swap</option>
+                            <option>Sushi Uni TVL Ratio</option>
                         </Form.Control>
                     </Form.Group>
                 </Form>
 
-                <Row>
+                <Row style={{marginTop:40}}>
                     <Col xs={0} sm={1} md={2} lg={2} ></Col>
                     <Col>
                         <div >
@@ -92,6 +91,9 @@ function Main(props){
                                                   collateralAddress={row.collateralAddress}
                                                   web3={props.web3}
                                                   description={row.description}
+                                                  currentPrice={currentValue}
+                                                  multiplyBy={Number(row.multiplyFactor)}
+                                                  divideBy={Number(row.divideFactor)}
                                         />
                                     )
                             }

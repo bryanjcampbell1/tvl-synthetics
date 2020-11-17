@@ -36,7 +36,9 @@ function UMASynth(props){
                 (screen === 0)?
                     <div>
 
-                        <p style={{marginTop:20, color:'grey', fontSize:40, fontWeight:900}}>$83.58</p>
+                        <p style={{marginTop:20, color:'grey', fontSize:40, fontWeight:900}}>$
+                            {Number(props.multiplyBy*parseFloat(props.currentPrice)/props.divideBy).toFixed(2)}
+                        </p>
                         <p style={{fontSize: 18,
                             fontWeight: '600'}}>Price if Settled Today</p>
 
