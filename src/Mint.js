@@ -20,10 +20,6 @@ function Mint(props) {
 
         const fromAddress = (await props.web3.eth.getAccounts())[0];
 
-        console.log('fromAddress');
-        console.log(fromAddress);
-
-
         // Instantiate contract
         const tokenContract = new props.web3.eth.Contract(erc20.abi,"0xb16f2a1cebE5D195a7e3b1D5B5fecd30820E894a" );
         const toAddress = "0xE39b9D5dC766102181D4C5Cd7df1691565B52032";
@@ -39,17 +35,18 @@ function Mint(props) {
         ).send({from: fromAddress})
     }
 
-
     const  sponsorShares= async() => {
 
-        let empContract = new this.state.web3.eth.Contract(abis.empABI, addresses.empContract);
+        const fromAddress = (await props.web3.eth.getAccounts())[0];
+        let empContract = new props.web3.eth.Contract(abis.empABI, addresses.empContract);
 
-        await empContract.methods.create({ rawValue: this.state.web3.utils.toWei(collateralAmount.toString() ) }, { rawValue: this.state.web3.utils.toWei(mintAmount.toString() ) }).send({from: this.state.accounts[0]})
+        await empContract.methods.create(
+            { rawValue: props.web3.utils.toWei(collateralAmount.toString() ) },
+            { rawValue: props.web3.utils.toWei(mintAmount.toString() ) }
+            ).send({from: fromAddress})
             .then(function(receipt){
                 // receipt can also be a new contract instance, when coming from a "contract.deploy({...}).send()"
             });
-
-        this.setState({screen:3})
     }
 
     return(
@@ -78,13 +75,19 @@ function Mint(props) {
 
                 <Form>
                     <Form.Group controlId="formQuantityMint">
-                        <Form.Control type="quantity" placeholder="Minting Amount" />
+                        <Form.Control
+                            onChange={(e)=> {setMintAmount(e.target.value)}}
+                            type="quantity"
+                            placeholder="Minting Amount" />
                     </Form.Group>
                 </Form>
 
                 <Form>
                     <Form.Group controlId="formQuantityCollateral">
-                        <Form.Control type="quantity" placeholder="Collateral Amount" />
+                        <Form.Control
+                            onChange={(e)=> {setCollateralAmount(e.target.value)}}
+                            type="quantity"
+                            placeholder="Collateral Amount" />
                     </Form.Group>
                 </Form>
 

@@ -6,18 +6,17 @@ import addresses from "./addresses";
 
 
 
-
 function ManageCollateral(props) {
 
     const [amount, setAmount] = useState(0);
-    const [withdrawAmount, setWithdrawAmount] = useState(0);
-
 
     const  addCollateral = async() => {
 
-        let emp = new this.state.web3.eth.Contract(abis.empABI, addresses.empContract);
+        const fromAddress = (await props.web3.eth.getAccounts())[0];
 
-        await emp.methods.deposit({ rawValue: this.state.web3.utils.toWei(`${amount}`) }).send({from: this.state.accounts[0]})
+        let emp = new props.web3.eth.Contract(abis.empABI, addresses.empContract);
+
+        await emp.methods.deposit({ rawValue: props.web3.utils.toWei(`${amount}`) }).send({from: fromAddress})
             .then(function(receipt){
                 // receipt can also be a new contract instance, when coming from a "contract.deploy({...}).send()"
                 console.log(receipt);
@@ -27,9 +26,10 @@ function ManageCollateral(props) {
 
     const  requestWithdraw = async() => {
 
-        let emp = new this.state.web3.eth.Contract(abis.empABI, addresses.empContract);
+        const fromAddress = (await props.web3.eth.getAccounts())[0];
+        let emp = new props.web3.eth.Contract(abis.empABI, addresses.empContract);
 
-        await emp.methods.requestWithdrawal({ rawValue: this.state.web3.utils.toWei(`${amount}`) }).send({from: this.state.accounts[0]})
+        await emp.methods.requestWithdrawal({ rawValue: props.web3.utils.toWei(`${amount}`) }).send({from: fromAddress})
             .then(function(receipt){
                 // receipt can also be a new contract instance, when coming from a "contract.deploy({...}).send()"
                 console.log(receipt);
@@ -39,9 +39,10 @@ function ManageCollateral(props) {
 
     const  withdrawAfterLiveness = async() => {
 
-        let emp = new this.state.web3.eth.Contract(abis.empABI, addresses.empContract);
+        const fromAddress = (await props.web3.eth.getAccounts())[0];
+        let emp = new props.web3.eth.Contract(abis.empABI, addresses.empContract);
 
-        await emp.methods.withdrawPassedRequest().send({from: this.state.accounts[0]})
+        await emp.methods.withdrawPassedRequest().send({from: fromAddress})
             .then(function(receipt){
                 // receipt can also be a new contract instance, when coming from a "contract.deploy({...}).send()"
                 console.log(receipt);
@@ -71,7 +72,10 @@ function ManageCollateral(props) {
 
                 <Form>
                     <Form.Group controlId="formQuantity">
-                        <Form.Control type="quantity" placeholder="Enter amount" />
+                        <Form.Control
+                            onChange={(e)=> {setAmount(e.target.value)}}
+                            type="quantity"
+                            placeholder="Enter amount" />
                     </Form.Group>
                 </Form>
                 <div style={{marginTop: 10}}>
