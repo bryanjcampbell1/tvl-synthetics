@@ -17,16 +17,16 @@ function Main(props){
 
     const [currentValue, setCurrentValue] = useState();
 
+
     useEffect(() => {
         getProductList();
     },[]);
+
 
     const  getProductList = async () => {
         try {
 
             let derivatives = db.collection("derivatives");
-            //let query = derivatives.where("expired", "==", false);
-
             let products = []
 
             await derivatives.get()

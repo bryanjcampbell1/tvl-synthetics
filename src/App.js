@@ -8,6 +8,10 @@ import web3Modal from "./WalletModal";
 import Portfolio from "./Portfolio";
 import About from "./About";
 
+import firebase from './firebase';
+require("firebase/firestore");
+var db = firebase.firestore();
+
 class App extends React.Component {
 
     constructor() {
@@ -17,7 +21,8 @@ class App extends React.Component {
             web3: null,
             account: null,
             authSignature:null,
-            page:'home'
+            page:'home',
+            derivatives: [{project:''}],
         }
 
     }
@@ -30,6 +35,33 @@ class App extends React.Component {
 
         this.setState({ web3: web3, account: account });
 
+    }
+
+    async getProductList(){
+        try {
+
+            let derivatives = db.collection("derivatives");
+            let products = []
+
+            await derivatives.get()
+                .then(function(querySnapshot) {
+                    querySnapshot.forEach(function(doc) {
+                        // doc.data() is never undefined for query doc snapshots
+                        console.log(doc.id, " => ", doc.data());
+                        products.push(doc.data());
+
+                    });
+                })
+                .catch(function(error) {
+                    console.log("Error getting documents: ", error);
+                });
+
+            this.setState({derivatives:products})
+
+
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     render() {
@@ -99,8 +131,8 @@ class App extends React.Component {
                     </div>
 
                 </div>
-                {(this.state.page === 'home')? <Home web3={this.state.web3}/> :<div></div>}
-                {(this.state.page === 'portfolio')? <Portfolio web3={this.state.web3}/> :<div></div>}
+                {(this.state.page === 'home')? <Home web3={this.state.web3} derivativesList={this.state.derivatives}/> :<div></div>}
+                {(this.state.page === 'portfolio')? <Portfolio web3={this.state.web3} derivativesList={this.state.derivatives}/> :<div></div>}
                 {(this.state.page === 'about')? <About web3={this.state.web3}/> :<div></div>}
 
             </div>
