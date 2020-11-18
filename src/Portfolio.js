@@ -14,7 +14,7 @@ var db = firebase.firestore();
 
 function Portfolio(props){
 
-    const [synthName, setSynthName] = useState('');
+    const [synthName, setSynthName] = useState();
     const [synthAddress, setSynthAddress] = useState('');
     const [synthBalance, setSynthBalance] = useState(0);
 
@@ -29,26 +29,33 @@ function Portfolio(props){
 
         getProductList();
 
+
     },[]);
 
     useEffect(() => {
-        if(props.web3) {
+        if(props.web3 && synthName) {
             loadToken();
         }
     },[synthName]);
 
 
     const  loadToken = async () => {
-        let synth = activeDerivatives.filter(c => c.tokenName === synthName);
+        let synth = activeDerivatives.filter(c => c.tokenName === synthName)[0];
 
         setSynthAddress(synth.tokenAddress);
 
         const myAddress = (await props.web3.eth.getAccounts())[0];
 
-        const tokenContract = new props.web3.eth.Contract(erc20.abi,"0x514910771af9ca656af840dff83e8264ecf986ca" );
+
+        // Get ERC20 Token contract instance
+        let contract = await new props.web3.eth.Contract(erc20.abi,synth.tokenAddress);
+
+        contract.methods.balanceOf(myAddress).call({from: myAddress}, function(error, result){
+            console.log(result);
+            setSynthBalance(parseFloat(parseFloat(result)/1000000000000000000).toFixed(3) )
+        });
 
 
-        //setSynthBalance(myBalance);
     }
 
     const  getProductList = async () => {
@@ -70,8 +77,11 @@ function Portfolio(props){
                     console.log("Error getting documents: ", error);
                 });
 
-            console.log(products);
+
             setActiveDerivatives(products);
+            setSynthName(products[0].tokenName);
+
+
 
         } catch (error) {
             console.error(error);
@@ -108,7 +118,7 @@ function Portfolio(props){
                                         display: 'flex',
                                         flexDirection: "column",
                                         alignItems: "center",
-                                        width: '50%'
+                                        width: '100%'
                                     }}>
                                         <p style={{
                                             fontSize: 18,
@@ -119,21 +129,7 @@ function Portfolio(props){
                                             fontWeight: '900',
                                         }}>{synthBalance}</p>
                                     </div>
-                                    <div style={{
-                                        display: 'flex',
-                                        flexDirection: "column",
-                                        alignItems: "center",
-                                        width: '50%'
-                                    }}>
-                                        <p style={{
-                                            fontSize: 18,
-                                            fontWeight: '600',
-                                        }}>Minted</p>
-                                        <p style={{
-                                            fontSize: 20,
-                                            fontWeight: '900',
-                                        }}>80</p>
-                                    </div>
+
                                 </div>
 
                                 <div style={{

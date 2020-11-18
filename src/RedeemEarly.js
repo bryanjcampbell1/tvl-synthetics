@@ -60,7 +60,7 @@ function RedeemEarly(props) {
             }}>Redeem Early</p>
 
             <div style={{width:'90%'}}>
-                <p >Token sponsors can redeem tokens even before the expiration date. Redeeming tokens will drop your minted balance.</p>
+                <p >Token sponsors can redeem tokens even before the expiration date.</p>
                 <Form>
                     <Form.Group controlId="formQuantityRedeem">
                         <Form.Control
